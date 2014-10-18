@@ -1,0 +1,14 @@
+extends ../layout
+
+block styles
+	link(href='/css/allowplugin.css')
+
+block content
+	h1= 'Allow ' + plugin.name + ' to access your account?'
+
+	form(action=routes.oauth2.decision, method='POST', class='login-form')
+		input(type='hidden', name='transaction_id', value=transactionID)
+		input(type='hidden', name='_csrf', value=csrf_token)
+		input(type='hidden', name='scope', value=plugin.scope)
+		input(type='submit', value='Allow', id='allow')
+		input(type='submit', value='Deny', name='cancel', id='allow')
