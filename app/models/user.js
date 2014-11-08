@@ -6,11 +6,13 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
     email: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },
-    name: { type: String, default: '' },
-    avatarURL: { type: String, default: '' },
-    githubLogin: { type: Boolean, default: false },
+    name: { type: String, required: true },
+    avatar_url: { type: String, default: null },
+    github_login: { type: Boolean, default: false },
     preferences: { type: Object, default: {} },
-    plugins: { type: [Schema.Types.ObjectId], default: [] }
+    plugins: { type: [Schema.Types.ObjectId], default: [] },
+    created_at: { type: Date },
+    updated_at: { type: Date }
 });
 
 UserSchema.pre('save', function(next) {
