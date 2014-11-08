@@ -15,7 +15,7 @@ var oauth2server;
 var config = require('./config/config');
 
 /* CONNECT TO DATABASE */
-mongoose.connect(config.db);
+mongoose.connect(config.db_uri, config.db_options);
 var db = mongoose.connection;
 
 db.on('error', function () {
@@ -36,7 +36,7 @@ passport = require('./config/passport');
 
 /* SETUP EXPRESS SERVER */
 if( config.env !== 'production' ) {
-	app.use(morgan(config.env)); // Log every request to the console
+	app.use(morgan('dev')); // Log every request to the console
 }
 
 app.use(express.static('./public'));
@@ -46,12 +46,16 @@ app.set('view engine', 'jade');
 app.locals.routes = require('./config/route_table');
 
 app.use(cookieParser()); // Read cookies (needed for auth)
-app.use(bodyParser()); // Get information from html forms
+app.use(bodyParser.json()); // Get information from requests
 
 app.set('view engine', 'jade'); // Set up jade for templating
 
 // Required for passport
-app.use(session({ secret: 'fasdfasdfasdffasdfasdfasdf' })); // session secret
+app.use(session({
+	secret: 'fasdfasdfasdffasdfasdfasdf', // session secret
+	resave: true, // forces session to be saved even when unmodified
+	saveUninitialized: true // forces a session that is "uninitialized" to be saved to the store.
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
