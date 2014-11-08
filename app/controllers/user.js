@@ -13,7 +13,19 @@ Static.error500 = function(err, res) {
 	});
 };
 
+Static.error404 = function(req, res) {
+	res.status(404).json({
+		status: 404,
+		message: "Can't find resource with id " + req.params.id + "."
+	});
+};
+
 module.exports = function(routes, passport, oauth2server) {
+
+	/**
+	 * Sends the user.
+	 * GET /api/v1/users/:id
+	 */
 	var show = function (req, res, next) {
 		tpl = require('../templates/json/user');
 
@@ -24,6 +36,27 @@ module.exports = function(routes, passport, oauth2server) {
 		});
 	};
 
+	/**
+	 * Updates a user and sends it.
+	 * PATCH /api/v1/users/:id
+	 */
+	var update = function (req, res, next) {
+		tpl = require('../templates/json/user');
+
+		User.findOneAndUpdate({ _id: req.params.id }, req.body, function(err, user) {
+			if (err) { return Static.error500(err, res); }
+			if (!user) { return Static.error404(req, res); }
+
+			/* TODO: Don't allow restricted attributes to be modified. */
+
+			res.json(json_tpl.parse(tpl.show, user));
+		});
+	};
+
+	/**
+	 * Creates a user and sends it.
+	 * POST /api/v1/users
+	 */
 	var create = function (req, res, next) {
 		var new_user;
 
@@ -46,6 +79,10 @@ module.exports = function(routes, passport, oauth2server) {
 		create: [
 			//passport.authenticate('bearer', { session: false }),
 			create
+		],
+		update: [
+			//passport.authenticate('bearer', { session: false }),
+			update
 		]
 	};
 };

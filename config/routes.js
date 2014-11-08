@@ -16,6 +16,7 @@ module.exports = function(app, passport, oauth2server){
 	var user = require('../app/controllers/user')(routes, passport, oauth2server);
 	api.get(routes.user.single, user.show);
 	api.post(routes.user.collection, user.create);
+	api.patch(routes.user.single, user.update);
 
 
 	// OAuth2 routes
