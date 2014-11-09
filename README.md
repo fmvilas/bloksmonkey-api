@@ -13,7 +13,7 @@ There is a [docs branch](https://github.com/fmvilas/didgeridoo-api/tree/docs) in
 
 ## How to contribute
 
-Follow this workflow: [http://nvie.com/posts/a-successful-git-branching-model/]().
+Follow this workflow: http://nvie.com/posts/a-successful-git-branching-model/.
 
 I highly recommend you to read how it works. **Even if you think you know, read it again.**
 
