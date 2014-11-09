@@ -5,7 +5,7 @@ This repo is for developing the REST API. You must think to this API as the cent
 
 It will provide endpoints to manage user information, projects and files. All of these behind an OAuth2 protocol to maintain user information secure at the same time we provide 3rd party developers to create better plugins for the IDE.
 
-> **IMPORTANT:** This API should not provide endpoints for creating or deleting users, though you may see some of these points available during development just for testing purposes.
+> **IMPORTANT:** This API should not provide endpoints for creating or deleting users, though you may see some of these endpoints available during development just for testing purposes.
 
 ## Read (and improve) the docs
 
