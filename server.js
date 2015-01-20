@@ -66,5 +66,7 @@ require('./config/routes.js')(app, passport, oauth2server);
 
 
 /* HERE COMES THE LORD */
-app.listen(config.port);
+var server = app.listen(config.port);
 console.log('Server listening on port ' + config.port);
+
+module.exports = server;
