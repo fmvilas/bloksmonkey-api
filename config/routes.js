@@ -8,9 +8,9 @@ module.exports = function(app, passport, oauth2server){
 
 	// Session routes
 	var session = require('../app/controllers/session')(routes, passport, oauth2server);
-	app.get(routes.session.login, session.login);
-	app.post(routes.session.login, session.logon);
-	app.get(routes.session.logout, session.logout);
+	api.get(routes.session.login, session.login);
+	api.post(routes.session.login, session.logon);
+	api.get(routes.session.logout, session.logout);
 
 	// User routes
 	var user = require('../app/controllers/user')(routes, passport, oauth2server);
