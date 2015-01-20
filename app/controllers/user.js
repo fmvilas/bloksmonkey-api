@@ -3,12 +3,13 @@
 
 var Static = {},
 	User = require('../models/user'),
-	json_tpl = require('json-tpl'),
+	json_tpl = require('../../../../json-tpl/lib/json-tpl'),
 	tpl;
 
-Static.error500 = function(err, res) {
-	res.status(500).json({
-		status: 500,
+
+Static.error403 = function(err, res) {
+	res.status(403).json({
+		status: 403,
 		message: err.message
 	});
 };
@@ -17,6 +18,13 @@ Static.error404 = function(req, res) {
 	res.status(404).json({
 		status: 404,
 		message: "Can't find resource with id " + req.params.id + "."
+	});
+};
+
+Static.error500 = function(err, res) {
+	res.status(500).json({
+		status: 500,
+		message: err.message
 	});
 };
 
@@ -43,11 +51,13 @@ module.exports = function(routes, passport, oauth2server) {
 	var update = function (req, res, next) {
 		tpl = require('../templates/json/user');
 
+		if( req.body.id || req.body.email ) {
+			return Static.error403(new Error('Forbidden. "id" and "email" are protected attributes.'), res);
+		}
+
 		User.findOneAndUpdate({ _id: req.params.id }, req.body, function(err, user) {
 			if (err) { return Static.error500(err, res); }
 			if (!user) { return Static.error404(req, res); }
-
-			/* TODO: Don't allow restricted attributes to be modified. */
 
 			res.json(json_tpl.parse(tpl.show, user));
 		});
@@ -61,7 +71,15 @@ module.exports = function(routes, passport, oauth2server) {
 		var new_user;
 
 		tpl = require('../templates/json/user');
-		new_user = json_tpl.parse(tpl.create, req.body);
+
+		try {
+			new_user = json_tpl.parse(tpl.create, req.body);
+		} catch(e) {
+			return res.status(422).json({
+				status: 422,
+				message: e.message
+			});
+		}
 
 		User.create(new_user, function(err, user) {
 			if (err) { return Static.error500(err, res); }
