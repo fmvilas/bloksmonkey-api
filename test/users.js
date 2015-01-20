@@ -169,7 +169,7 @@ describe('User API', function() {
 			req.end();
 		});
 
-		/*it('should respond with a 422 (Unprocessable Entity) status', function(done) {
+		it('should respond with a 422 (Unprocessable Entity) status', function(done) {
 			var payload = JSON.stringify({
 			    	name: 'Jon Nieve'
 			    }),
@@ -191,7 +191,7 @@ describe('User API', function() {
 			req.write(payload);
 
 			req.end();
-		});*/
+		});
 	});
 
 });
