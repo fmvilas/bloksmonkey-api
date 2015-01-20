@@ -2,21 +2,30 @@
 "use strict";
 
 module.exports = function(app, passport, oauth2server){
-	var routes = require('./route_table');
+	var express = require('express'),
+		routes = require('./route_table'),
+		api = express.Router();
+
+	// Session routes
+	var session = require('../app/controllers/session')(routes, passport, oauth2server);
+	api.get(routes.session.login, session.login);
+	api.post(routes.session.login, session.logon);
+	api.get(routes.session.logout, session.logout);
 
 	// User routes
 	var user = require('../app/controllers/user')(routes, passport, oauth2server);
-	app.get(routes.user.login, user.login);
-	app.post(routes.user.login, user.logon);
-	app.get(routes.user.logout, user.logout);
-	app.get(routes.user.item, user.show);
+	api.get(routes.user.single, user.show);
+	api.post(routes.user.collection, user.create);
+	api.patch(routes.user.single, user.update);
 
 
 	// OAuth2 routes
 	var oauth2 = require('../app/controllers/oauth2')(routes, passport, oauth2server);
-	app.get(routes.oauth2.authorize, oauth2.authorize);
-	app.post(routes.oauth2.decision, oauth2.decision);
-	app.post(routes.oauth2.token, oauth2.token);
+	api.get(routes.oauth2.authorize, oauth2.authorize);
+	api.post(routes.oauth2.decision, oauth2.decision);
+	api.post(routes.oauth2.token, oauth2.token);
+
+	app.use(routes.root, api);
 
 	return routes;
 };

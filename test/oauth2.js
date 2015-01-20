@@ -6,11 +6,11 @@ var http = require('http');
 //TODO: hacer tests de fallos intencionados y URLs raras
 
 var host = 'http://localhost:3000',
-clientID = '529cd86b14b7ac13324fe883',
-redirectURI = 'http://192.168.0.192/oauth/',
-loginPath = '/login',
-codeEndpointURL = '/authorize?response_type=code&client_id='+clientID+'&redirect_uri='+redirectURI,
-cookie;
+	clientID = '529cd86b14b7ac13324fe883',
+	redirectURI = 'http://192.168.0.192/oauth/',
+	loginPath = '/api/v1/login',
+	codeEndpointURL = '/api/v1/oauth2/authorize?response_type=code&client_id='+clientID+'&redirect_uri='+redirectURI,
+	cookie;
 
 
 describe('OAuth2', function() {
@@ -54,7 +54,6 @@ describe('OAuth2', function() {
 	describe('#authorize', function() {
 
 		it('should request for a code', function(done) {
-			console.log('Sending Cookie: ' + cookie + '\n');
 			var options = {
 				hostname: 'localhost',
 				port: 3000,
@@ -69,10 +68,8 @@ describe('OAuth2', function() {
 
 			var req = http.request(options, function(res) {
 				console.log('Got response: ' + res.statusCode);
-
-				done()
-
-			})
+				done();
+			});
 
 			req.on('error', function(e) {
 				console.log('Got error: ' + e.message);
