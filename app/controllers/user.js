@@ -3,7 +3,7 @@
 
 var Static = {},
 	User = require('../models/user'),
-	json_tpl = require('../../../../json-tpl/lib/json-tpl'),
+	json_tpl = require('templo'),
 	tpl;
 
 
