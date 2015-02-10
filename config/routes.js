@@ -3,8 +3,8 @@
 
 module.exports = function(app, passport, oauth2server){
   var express = require('express'),
-    routes = require('./route_table'),
-    api = express.Router();
+      routes = require('./route_table'),
+      api = express.Router();
 
   // Session routes
   var session = require('../app/controllers/session')(routes, passport, oauth2server);
@@ -15,7 +15,6 @@ module.exports = function(app, passport, oauth2server){
   // User routes
   var user = require('../app/controllers/user')(routes, passport, oauth2server);
   api.get(routes.user.single, user.show);
-  api.post(routes.user.collection, user.create);
   api.patch(routes.user.single, user.update);
 
   // Project routes

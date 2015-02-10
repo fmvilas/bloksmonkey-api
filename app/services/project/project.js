@@ -1,5 +1,6 @@
-var templo = require('templo'),
-    templates = require('../templates/json/project'),
+var ProjectSchema = require('../../models/project'),
+    templo = require('templo'),
+    templates = require('./templates/project'),
     _ = require('underscore');
 
 /**
@@ -87,8 +88,7 @@ function parseResponse(template, data) {
 // PUBLIC INTERFACE
 
 module.exports = function(db) {
-    var ProjectSchema = require('../models/project'),
-        Project = db.model('Project');
+    var Project = db.model('Project');
 
     return {
         list: function(params, callback) {
