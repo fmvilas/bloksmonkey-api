@@ -13,5 +13,9 @@ module.exports = {
 	user: {
 		single: '/users/:id',
 		collection: '/users'
+	},
+	project: {
+		single: '/projects/:id',
+		collection: '/projects'
 	}
 };
