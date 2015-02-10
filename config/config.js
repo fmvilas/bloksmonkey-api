@@ -21,7 +21,12 @@ var config = {
 			name: 'didgeridoo.api'
 		},
 		port: 3000,
-		db: 'mongodb://didgeridooUser:1234@localhost:27017/didgeridoo'
+		db_uri: 'mongodb://localhost/didgeridoo_test',
+		db_options: {
+			user: 'didgeridooUser',
+			pass: '1234',
+			port: 27017
+		}
 	},
 
 	production: {
