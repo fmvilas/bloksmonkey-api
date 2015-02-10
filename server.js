@@ -19,7 +19,7 @@ mongoose.connect(config.db_uri, config.db_options);
 var db = mongoose.connection;
 
 db.on('error', function () {
-	throw new Error('Unable to connect to database at ' + config.db);
+  throw new Error('Unable to connect to database at ' + config.db);
 });
 
 /* SETUP MODELS */
@@ -36,7 +36,7 @@ passport = require('./config/passport');
 
 /* SETUP EXPRESS SERVER */
 if( config.env !== 'production' ) {
-	app.use(morgan('dev')); // Log every request to the console
+  app.use(morgan('dev')); // Log every request to the console
 }
 
 app.use(express.static('./public'));
@@ -52,9 +52,9 @@ app.set('view engine', 'jade'); // Set up jade for templating
 
 // Required for passport
 app.use(session({
-	secret: 'fasdfasdfasdffasdfasdfasdf', // session secret
-	resave: true, // forces session to be saved even when unmodified
-	saveUninitialized: true // forces a session that is "uninitialized" to be saved to the store.
+  secret: 'fasdfasdfasdffasdfasdfasdf', // session secret
+  resave: true, // forces session to be saved even when unmodified
+  saveUninitialized: true // forces a session that is "uninitialized" to be saved to the store.
 }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
@@ -62,7 +62,11 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 /* SETUP ROUTES */
 /* Load our routes and pass in our app, fully configured passport and oauth2server */
-require('./config/routes.js')(app, passport, oauth2server);
+db.on('connected', function () {
+  console.log('Connected to database!');
+  require('./config/routes.js')(app, passport, oauth2server);
+});
+
 
 
 /* HERE COMES THE LORD */
