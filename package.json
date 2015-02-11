@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "server.js",
-    "test": "test/test.sh"
+    "test": "test/test.js"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -33,6 +33,7 @@
     "gulp-nodemon": "1.0.4",
     "mocha": "2.0.1",
     "mongodb": "2.0.15",
-    "supertest": "0.15.0"
+    "supertest": "0.15.0",
+    "walk": "2.3.9"
   }
 }
