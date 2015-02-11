@@ -1,4 +1,4 @@
-var ProjectService = require('../../app/services/project'),
+var ProjectService = require('../../app/services/project/project'),
   should = require('chai').should(),
   database = require('../db'),
   _ = require('underscore'),

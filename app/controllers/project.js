@@ -1,10 +1,10 @@
 /*jslint vars:true, node:true */
 "use strict";
 
-var ProjectService = require('../services/project'),
-  mongoose = require('mongoose'),
-  service = new ProjectService(mongoose.connection),
-  _ = require('underscore');
+var ProjectService = require('../services/project/project'),
+    mongoose = require('mongoose'),
+    service = new ProjectService(mongoose.connection),
+    _ = require('underscore');
 
 
 function respondWithError(err, res) {
@@ -94,7 +94,6 @@ module.exports = function(routes, passport, oauth2server) {
         return res.json(project);
       });
     } catch(e) {
-      console.dir(e);
       return respondWithError(e, res);
     }
   };

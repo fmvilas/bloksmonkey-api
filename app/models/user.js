@@ -7,7 +7,7 @@ var UserSchema = new Schema({
     email: { type: String, required: true, index: { unique: true } },
     password: { type: String, required: true },
     name: { type: String, required: true },
-    avatar_url: { type: String, default: null },
+    avatar_url: { type: String, default: '' },
     github_login: { type: Boolean, default: false },
     preferences: { type: Object, default: {} },
     plugins: { type: [Schema.Types.ObjectId], default: [] },
