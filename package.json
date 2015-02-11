@@ -2,6 +2,10 @@
   "name": "didgeridoo-api",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "0.12.0"
+  },
+  "engineStrict": true,
   "scripts": {
     "start": "server.js",
     "test": "test/test.js"
