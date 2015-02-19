@@ -100,23 +100,23 @@ module.exports = function(routes, passport, oauth2server) {
 
   return {
     list: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       list
     ],
     show: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       show
     ],
     create: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       create
     ],
     update: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       update
     ],
     remove: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       remove
     ]
   };

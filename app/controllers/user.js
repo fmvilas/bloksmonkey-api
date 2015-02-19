@@ -51,11 +51,11 @@ module.exports = function(routes, passport, oauth2server) {
 
   return {
     show: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       show
     ],
     update: [
-      //passport.authenticate('bearer', { session: false }),
+      passport.authenticate('bearer', { session: false }),
       update
     ]
   };

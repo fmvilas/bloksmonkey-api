@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
     request = require('supertest'),
     host = 'http://localhost:' + config.port,
     single_user_endpoint = '/api/v1/users/51964caa9c253bdbb1d00fb4',
-    users_endpoint = '/api/v1/users';
+    users_endpoint = '/api/v1/users',
+    token = require('../../config/seed/access_tokens')[0].oauth_token;
 
 describe('User API', function() {
 
@@ -19,6 +20,7 @@ describe('User API', function() {
   describe('GET /api/v1/users/:id', function() {
     it('should retrieve user information', function(done) {
       request.get(single_user_endpoint)
+      .query({ access_token: token })
       .expect(200)
       .expect(function(res) {
         var json = res.body;
@@ -38,6 +40,7 @@ describe('User API', function() {
   describe('PATCH /api/v1/users/:id', function() {
     it('should update user information', function(done) {
       request.patch(single_user_endpoint)
+      .query({ access_token: token })
       .send({ name: "My modified user name", avatar_url: 'http://www.jontravolta.com/avatar.jpg' })
       .expect(200)
       .expect(function(res) {
@@ -56,6 +59,7 @@ describe('User API', function() {
 
     it('should not update protected attributes', function(done) {
       request.patch(single_user_endpoint)
+      .query({ access_token: token })
       .send({ id: "51964caa9c253bdbb1d00fb4" })
       .expect(200)
       .expect(function(res) {
