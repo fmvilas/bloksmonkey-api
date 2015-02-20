@@ -4,10 +4,16 @@ var mongoose = require('mongoose'),
     async = require('async'),
     projects = require('./seed/projects'),
     users = require('./seed/users'),
+    clients = require('./seed/clients'),
+    access_tokens = require('./seed/access_tokens'),
     UserSchema = require('../app/models/user'),
     ProjectSchema = require('../app/models/project'),
+    AccessTokenSchema = require('../app/models/access_token'),
+    ClientSchema = require('../app/models/client'),
     Project,
-    User;
+    User,
+    AccessToken,
+    Client;
 
 function emptyDatabase(callback) {
   async.parallel([
@@ -21,6 +27,20 @@ function emptyDatabase(callback) {
     // Remove all projects
     function(callback) {
       Project.remove(function(err) {
+        if( err ) { return callback(err); }
+        callback(null);
+      });
+    },
+    // Remove all access tokens
+    function(callback) {
+      AccessToken.remove(function(err) {
+        if( err ) { return callback(err); }
+        callback(null);
+      });
+    },
+    // Remove all clients
+    function(callback) {
+      Client.remove(function(err) {
         if( err ) { return callback(err); }
         callback(null);
       });
@@ -42,10 +62,24 @@ function seedProjects(callback) {
   });
 }
 
+function seedClients(callback) {
+  Client.create(clients, function(err, clients) {
+    callback(err, clients);
+  });
+}
+
+function seedAccessTokens(callback) {
+  AccessToken.create(access_tokens, function(err, access_tokens) {
+    callback(err, access_tokens);
+  });
+}
+
 function seed(callback) {
   async.parallel([
     function(cb) { seedUsers(cb); },
-    function(cb) { seedProjects(cb); }
+    function(cb) { seedProjects(cb); },
+    function(cb) { seedClients(cb); },
+    function(cb) { seedAccessTokens(cb); }
   ], function(err, results) {
     callback(err, results);
   });
@@ -54,6 +88,8 @@ function seed(callback) {
 db.on('connected', function() {
   User = db.model('User');
   Project = db.model('Project');
+  AccessToken = db.model('AccessToken');
+  Client = db.model('Client');
 
   async.series([
     function(callback) {

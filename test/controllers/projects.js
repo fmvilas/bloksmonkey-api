@@ -7,7 +7,8 @@ var mongoose = require('mongoose'),
     request = require('supertest'),
     host = 'http://localhost:' + config.port,
     single_project_endpoint = '/api/v1/projects/54cfcc0244b6fd7034198f20',
-    projects_endpoint = '/api/v1/projects';
+    projects_endpoint = '/api/v1/projects',
+    token = require('../../config/seed/access_tokens')[0].oauth_token;
 
 describe('Project API', function() {
 
@@ -19,6 +20,7 @@ describe('Project API', function() {
   describe('GET /api/v1/projects', function() {
     it('should retrieve project list', function(done) {
       request.get(projects_endpoint)
+      .query({ access_token: token })
       .expect(200)
       .expect(function(res) {
         var json = res.body;
@@ -31,6 +33,7 @@ describe('Project API', function() {
   describe('GET /api/v1/projects/:id', function() {
     it('should retrieve project information', function(done) {
       request.get(single_project_endpoint)
+      .query({ access_token: token })
       .expect(200)
       .expect(function(res) {
         var json = res.body;
@@ -47,6 +50,7 @@ describe('Project API', function() {
   describe('PATCH /api/v1/projects/:id', function() {
     it('should update project information', function(done) {
       request.patch(single_project_endpoint)
+      .query({ access_token: token })
       .send({ name: "My modified project name" })
       .expect(200)
       .expect(function(res) {
@@ -62,6 +66,7 @@ describe('Project API', function() {
 
     it('should not update protected attributes', function(done) {
       request.patch(single_project_endpoint)
+      .query({ access_token: token })
       .send({ id: "54cfcc0244b6fd7034198f21" })
       .expect(200)
       .expect(function(res) {
@@ -75,6 +80,7 @@ describe('Project API', function() {
   describe('POST /api/v1/projects', function() {
     it('should create a new project and retrieve it', function(done) {
       request.post(projects_endpoint)
+      .query({ access_token: token })
       .send({
         name: "A created project",
         description: "A created description",
@@ -97,6 +103,7 @@ describe('Project API', function() {
   describe('DELETE /api/v1/projects/:id', function() {
     it('should remove a project and respond with status object', function(done) {
       request.delete(single_project_endpoint)
+      .query({ access_token: token })
       .expect(200)
       .expect(function(res) {
         var json = res.body;

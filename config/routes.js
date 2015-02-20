@@ -10,7 +10,7 @@ module.exports = function(app, passport, oauth2server){
   var session = require('../app/controllers/session')(routes, passport, oauth2server);
   api.get(routes.session.login, session.login);
   api.post(routes.session.login, session.logon);
-  api.get(routes.session.logout, session.logout);
+  api.post(routes.session.logout, session.logout);
 
   // User routes
   var user = require('../app/controllers/user')(routes, passport, oauth2server);

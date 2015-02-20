@@ -8,6 +8,7 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
+    csrf = require('csurf')(),
     passport;
 
 var mongoose = require('mongoose');
@@ -46,7 +47,10 @@ app.set('view engine', 'jade');
 app.locals.routes = require('./config/route_table');
 
 app.use(cookieParser()); // Read cookies (needed for auth)
-app.use(bodyParser.json()); // Get information from requests
+app.use(bodyParser.json()); // Get information from json requests
+app.use(bodyParser.urlencoded({ // Get information from urlencoded requests
+  extended: true
+}));
 
 app.set('view engine', 'jade'); // Set up jade for templating
 
@@ -60,14 +64,29 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-/* SETUP ROUTES */
-/* Load our routes and pass in our app, fully configured passport and oauth2server */
-db.on('connected', function () {
-  console.log('Connected to database!');
-  require('./config/routes.js')(app, passport, oauth2server);
+app.use(function(req, res, next) { // CSRF Token protection
+  var routes = app.locals.routes,
+      protected_routes = [
+        routes.root + routes.session.login,
+        routes.root + routes.session.logout,
+        routes.root + routes.oauth2.authorize,
+        routes.root + routes.oauth2.decision
+      ];
+
+  if( protected_routes.indexOf(req.path) === -1 ) {
+    next();
+  } else {
+    csrf(req, res, function() {
+      var token = req.csrfToken();
+      res.cookie('XSRF-TOKEN', token);
+      next();
+    });
+  }
 });
 
-
+/* SETUP ROUTES */
+/* Load our routes and pass in our app, fully configured passport and oauth2server */
+require('./config/routes.js')(app, passport, oauth2server);
 
 /* HERE COMES THE LORD */
 var server = app.listen(config.port);

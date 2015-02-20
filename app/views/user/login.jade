@@ -1,23 +1,23 @@
 extends ../layout
 
 block styles
-	link(href='/css/login.css')
+  link(href='/css/login.css')
 
 block content
-	h1 Login
+  h1 Login
 
-	form(action=routes.user.login, method='POST', class='login-form')
-		p
-			label(for='email') Your email
-		p
-			input(name='email', value='demo@didgeridoo.io')
-		p
-			label(for='password') Your password
-		p
-			input(name='password', type='password', value='1234')
+  form(action=routes.user.login, method='POST', class='login-form')
+    p
+      label(for='email') Your email
+    p
+      input(name='email', value='jon@bloksmonkey.io')
+    p
+      label(for='password') Your password
+    p
+      input(name='password', type='password', value='1234')
 
-		input(name='next', type='hidden', value=next_url)
-		input(type='hidden', name='_csrf', value=csrf_token)
+    input(name='next', type='hidden', value=next_url)
+    input(type='hidden', name='_csrf', value=csrf_token)
 
-		p
-			input(value='Login', type='submit')
+    p
+      input(value='Login', type='submit')

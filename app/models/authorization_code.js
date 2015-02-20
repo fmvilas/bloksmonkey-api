@@ -9,4 +9,6 @@ var AuthorizationCodeSchema = new mongoose.Schema({
     scope: { type: String }
 });
 
+AuthorizationCodeSchema.index({ user_id: 1, client_id: 1 }, { unique: true });
+
 exports.AuthorizationCode = mongoose.model('AuthorizationCode', AuthorizationCodeSchema);
