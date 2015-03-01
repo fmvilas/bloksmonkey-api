@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var AuthorizationCodeSchema = new mongoose.Schema({
     code: { type: String },
-    client_id: { type: mongoose.Schema.ObjectId, ref: 'Plugin' },
+    client_id: { type: mongoose.Schema.ObjectId, ref: 'Client' },
     user_id: { type: mongoose.Schema.ObjectId, ref: 'User' },
     redirect_uri: { type: String },
     scope: { type: String }

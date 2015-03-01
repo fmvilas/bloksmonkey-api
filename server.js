@@ -25,6 +25,7 @@ db.on('error', function () {
 
 /* SETUP MODELS */
 require('./app/models/user');
+require('./app/models/project');
 require('./app/models/client');
 require('./app/models/authorization_code');
 require('./app/models/access_token');

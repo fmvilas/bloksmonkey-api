@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var AccessTokenSchema = new mongoose.Schema({
     oauth_token: { type: String },
     user_id: { type: mongoose.Schema.ObjectId, ref: 'User' },
-    client_id: { type: mongoose.Schema.ObjectId, ref: 'Plugin' },
+    client_id: { type: mongoose.Schema.ObjectId, ref: 'Client' },
     expires: { type: Date },
     scope: { type: String }
 });
