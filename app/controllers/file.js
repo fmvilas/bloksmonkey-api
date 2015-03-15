@@ -3,6 +3,7 @@
 
 var FileService = require('../services/file/file'),
     mongoose = require('mongoose'),
+    checkHasScope = require('../helpers/auth').checkHasScope,
     service = new FileService(mongoose.connection),
     _ = require('underscore'),
     fs = require('fs');
@@ -143,34 +144,42 @@ module.exports = function(routes, passport, oauth2server) {
   return {
     list: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files_read', 'project_files']),
       list
     ],
     show: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files_read', 'project_files']),
       show
     ],
     show_content: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files_read', 'project_files']),
       show_content
     ],
     create: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files']),
       create
     ],
     create_with_content: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files']),
       create_with_content
     ],
     update: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files']),
       update
     ],
     update_content: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files']),
       update_content
     ],
     remove: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_files']),
       remove
     ]
   };
