@@ -1,10 +1,10 @@
 var FileService = require('../../app/services/file/file'),
-  should = require('chai').should(),
-  database = require('../db'),
-  _ = require('underscore'),
-  db,
-  service,
-  all_fields;
+    should = require('chai').should(),
+    database = require('../db'),
+    _ = require('underscore'),
+    db,
+    service,
+    all_fields;
 
 describe('FileService', function() {
 
@@ -26,7 +26,7 @@ describe('FileService', function() {
       service.list({
         project_id: '54cfcc0244b6fd7034198f20'
       }, function(err, files) {
-        if( err ) { console.dir(err); return done(err); }
+        if( err ) { return done(err); }
 
         files.should.be.an('array');
         files.length.should.be.eql(2);
@@ -86,9 +86,9 @@ describe('FileService', function() {
     });
   });
 
-  describe('#stats', function() {
-    it('should retrieve stats information for a file', function(done) {
-      service.stats({
+  describe('#find', function() {
+    it('should retrieve information for a file', function(done) {
+      service.find({
         name: 'index.html',
         project_id: '54cfcc0244b6fd7034198f20'
       }, function(err, file) {
@@ -112,9 +112,9 @@ describe('FileService', function() {
     });
   });
 
-  describe('#raw', function() {
+  describe('#content', function() {
     it('should retrieve raw content of a file', function(done) {
-      service.raw({
+      service.content({
         name: 'index.html',
         project_id: '54cfcc0244b6fd7034198f20'
       }, function(err, file) {
@@ -128,53 +128,21 @@ describe('FileService', function() {
     });
   });
 
-  describe('#find', function() {
-    it('should retrieve base64 encoded content and stats of a file', function(done) {
-      service.find({
-        name: 'index.html',
-        project_id: '54cfcc0244b6fd7034198f20'
-      }, function(err, file) {
-        if( err ) { console.dir(err); return done(err); }
-
-        file.should.be.an('object');
-        file.should.have.keys(['name', 'path', 'full_path', 'user_id', 'project_id', 'encoding',
-                               'content', 'size', 'type', 'mime', 'created_at', 'updated_at']);
-        file.name.should.be.eql('index.html');
-        file.path.should.be.eql('/');
-        file.full_path.should.be.eql('/index.html');
-        file.user_id.should.be.eql('51964caa9c253bdbb1d00fb4');
-        file.project_id.should.be.eql('54cfcc0244b6fd7034198f20');
-        file.size.should.be.eql(98);
-        file.type.should.be.eql('file');
-        file.mime.should.be.eql('text/html');
-        file.created_at.should.be.eql('Fri Nov 07 2014 17:04:06 GMT+0100 (CET)');
-        file.updated_at.should.be.eql('Fri Nov 07 2014 17:04:06 GMT+0100 (CET)');
-        file.encoding.should.be.eql('base64');
-        file.content.should.be.a('string');
-        done();
-      });
-    });
-  });
-
   describe('#create', function() {
     it('should create a file', function(done) {
-      var content = new Buffer('Hello world!', 'binary').toString('base64');
-
       service.create({
         name: 'test.txt',
         project_id: '54cfcc0244b6fd7034198f20',
-        user_id: '51964caa9c253bdbb1d00fb4',
-        content: content
+        user_id: '51964caa9c253bdbb1d00fb4'
       }, function(err, file) {
         if( err ) { console.dir(err); return done(err); }
 
-        new Buffer(file.content, 'base64').toString().should.be.eql('Hello world!');
         file.name.should.be.eql('test.txt');
         file.path.should.be.eql('/');
         file.full_path.should.be.eql('/test.txt');
         file.user_id.should.be.eql('51964caa9c253bdbb1d00fb4');
         file.project_id.should.be.eql('54cfcc0244b6fd7034198f20');
-        file.size.should.be.eql(content.length);
+        file.size.should.be.eql(0);
         file.type.should.be.eql('file');
         file.mime.should.be.eql('text/plain');
         file.created_at.should.be.a('string');
@@ -224,24 +192,73 @@ describe('FileService', function() {
     });
   });
 
+  describe('#create_with_content', function() {
+    it('should create a file with content', function(done) {
+      var content = 'Hello world!';
+
+      service.create_with_content({
+        name: 'test_with_content.txt',
+        project_id: '54cfcc0244b6fd7034198f20',
+        user_id: '51964caa9c253bdbb1d00fb4'
+      }, content, function(err, file) {
+        if( err ) { console.dir(err); return done(err); }
+
+        file.name.should.be.eql('test_with_content.txt');
+        file.path.should.be.eql('/');
+        file.full_path.should.be.eql('/test_with_content.txt');
+        file.user_id.should.be.eql('51964caa9c253bdbb1d00fb4');
+        file.project_id.should.be.eql('54cfcc0244b6fd7034198f20');
+        file.size.should.be.eql(content.length);
+        file.type.should.be.eql('file');
+        file.mime.should.be.eql('text/plain');
+        file.created_at.should.be.a('string');
+        file.updated_at.should.be.a('string');
+        done();
+      });
+    });
+  });
+
   describe('#update', function() {
     it('should update a file', function(done) {
-      var new_content = new Buffer('Hello another world!', 'binary').toString('base64');
-
       service.update({
         name: 'test.txt',
-        project_id: '54cfcc0244b6fd7034198f20',
-        content: new_content
+        project_id: '54cfcc0244b6fd7034198f20'
+      }, {
+        name: 'test_updated.jpg'
       }, function(err, file) {
         if( err ) { console.dir(err); return done(err); }
 
-        new Buffer(file.content, 'base64').toString().should.be.eql('Hello another world!');
-        file.name.should.be.eql('test.txt');
+        file.name.should.be.eql('test_updated.jpg');
         file.path.should.be.eql('/');
-        file.full_path.should.be.eql('/test.txt');
+        file.full_path.should.be.eql('/test_updated.jpg');
         file.user_id.should.be.eql('51964caa9c253bdbb1d00fb4');
         file.project_id.should.be.eql('54cfcc0244b6fd7034198f20');
-        file.size.should.be.eql(new_content.length);
+        file.type.should.be.eql('file');
+        file.mime.should.be.eql('image/jpeg');
+        file.created_at.should.be.a('string');
+        file.updated_at.should.be.a('string');
+        done();
+      });
+    });
+  });
+
+  describe('#update_content', function() {
+    it('should update a file content', function(done) {
+      var content = 'Hello wonderful world!';
+
+      service.update_content({
+        name: 'test_with_content.txt',
+        project_id: '54cfcc0244b6fd7034198f20',
+        user_id: '51964caa9c253bdbb1d00fb4'
+      }, content, function(err, file) {
+        if( err ) { console.dir(err); return done(err); }
+
+        file.name.should.be.eql('test_with_content.txt');
+        file.path.should.be.eql('/');
+        file.full_path.should.be.eql('/test_with_content.txt');
+        file.user_id.should.be.eql('51964caa9c253bdbb1d00fb4');
+        file.project_id.should.be.eql('54cfcc0244b6fd7034198f20');
+        file.size.should.be.eql(content.length);
         file.type.should.be.eql('file');
         file.mime.should.be.eql('text/plain');
         file.created_at.should.be.a('string');
@@ -254,7 +271,20 @@ describe('FileService', function() {
   describe('#remove', function() {
     it('should remove a file', function(done) {
       service.remove({
-        name: 'test.txt',
+        name: 'test_updated.jpg',
+        project_id: '54cfcc0244b6fd7034198f20'
+      }, function(err, res) {
+        if( err ) { console.dir(err); return done(err); }
+
+        res.status.should.be.eql(200);
+        res.message.should.be.eql('File deleted succesfully');
+        done();
+      });
+    });
+
+    it('should remove a file', function(done) {
+      service.remove({
+        name: 'test_with_content.txt',
         project_id: '54cfcc0244b6fd7034198f20'
       }, function(err, res) {
         if( err ) { console.dir(err); return done(err); }

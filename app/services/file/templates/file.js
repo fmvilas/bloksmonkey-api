@@ -20,22 +20,22 @@ function validateType(type, context) {
   };
 }
 
-function validateContent(content, context) {
-  return (context.type === 'dir' ? content === '' : true ) || {
-    errors: {
-      content: {
-        message: 'Directories does not allow <content>.'
-      }
-    }
-  };
-}
-
 function validatePath(path, context) {
   if( path && !path.match(/^\//) ) {
     return {
       errors: {
         path: {
           message: '<path> must start by "/".'
+        }
+      }
+    };
+  }
+
+  if( path && !path.match(/\/$/) ) {
+    return {
+      errors: {
+        path: {
+          message: '<path> must finish by "/".'
         }
       }
     };
@@ -94,7 +94,13 @@ var list_params = {
   fields:      { type: 'string', default: 'name path full_path user_id project_id size type mime created_at updated_at', validate_with: validateFields }
 };
 
-var show_stats = {
+var show_params = {
+  name:        { type: 'string', required: true },
+  project_id:  { type: 'string', required: true },
+  path:        { type: 'string', default: '/' }
+};
+
+var show = {
   name:        { type: 'string', required: true },
   path:        { type: 'string', required: true },
   full_path:   { type: 'string', required: true },
@@ -107,23 +113,22 @@ var show_stats = {
   updated_at:  { type: 'string', required: true }
 };
 
-var show_all = _.extend({
-  content:     { type: 'string', required: true }
-}, show_stats);
-
-var show_params = {
-  name:        { type: 'string', required: true },
-  project_id:  { type: 'string', required: true },
-  path:        { type: 'string', default: '/' }
-};
-
 var create = {
   name:        { type: 'string', required: true, validate_with: validateName },
   project_id:  { type: 'string', required: true },
   user_id:     { type: 'string', required: true },
   path:        { type: 'string', default: '/', validate_with: validatePath },
-  encoding:    { type: 'string', default: 'base64' },
-  content:     { type: 'string', default: '', validate_with: validateContent },
+  encoding:    { type: 'string', default: 'utf-8' },
+  type:        { type: 'string', default: 'file', validate_with: validateType },
+  mime:        { type: 'string', default: 'text/plain' }
+};
+
+var create_with_content_params = {
+  name:        { type: 'string', required: true, validate_with: validateName },
+  project_id:  { type: 'string', required: true },
+  user_id:     { type: 'string', required: true },
+  path:        { type: 'string', default: '/', validate_with: validatePath },
+  encoding:    { type: 'string', default: 'utf-8' },
   type:        { type: 'string', default: 'file', validate_with: validateType },
   mime:        { type: 'string', default: 'text/plain' }
 };
@@ -137,7 +142,6 @@ var update_params = {
 var update = {
   name:        { type: 'string', validate_with: validateName },
   path:        { type: 'string', validate_with: validatePath },
-  content:     { type: 'string', validate_with: validateContent },
   type:        { type: 'string', validate_with: validateType },
   mime:        { type: 'string' }
 };
@@ -151,10 +155,10 @@ var remove_params = {
 
 module.exports = {
   list_params: list_params,
-  show_stats: show_stats,
-  show_all: show_all,
   show_params: show_params,
+  show: show,
   create: create,
+  create_with_content_params: create_with_content_params,
   update_params: update_params,
   update: update,
   remove_params: remove_params
