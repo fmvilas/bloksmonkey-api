@@ -25,6 +25,8 @@ db.on('error', function () {
 
 /* SETUP MODELS */
 require('./app/models/user');
+require('./app/models/project');
+require('./app/models/file');
 require('./app/models/client');
 require('./app/models/authorization_code');
 require('./app/models/access_token');
@@ -48,6 +50,7 @@ app.locals.routes = require('./config/route_table');
 
 app.use(cookieParser()); // Read cookies (needed for auth)
 app.use(bodyParser.json()); // Get information from json requests
+app.use(bodyParser.raw()); // Get information from raw stream requests
 app.use(bodyParser.urlencoded({ // Get information from urlencoded requests
   extended: true
 }));

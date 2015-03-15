@@ -18,5 +18,10 @@ module.exports = {
   project: {
     single: '/projects/:id',
     collection: '/projects'
+  },
+  file: {
+    content: '/projects/:project_id/files/:name/content',
+    single: '/projects/:project_id/files/:name(*)',
+    collection: '/projects/:project_id/files'
   }
 };

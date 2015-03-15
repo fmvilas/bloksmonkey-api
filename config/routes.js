@@ -25,6 +25,17 @@ module.exports = function(app, passport, oauth2server){
   api.patch(routes.project.single, project.update);
   api.delete(routes.project.single, project.remove);
 
+  // File routes
+  var file = require('../app/controllers/file')(routes, passport, oauth2server);
+  api.get(routes.file.content, file.show_content);
+  api.get(routes.file.single, file.show);
+  api.get(routes.file.collection, file.list);
+  api.post(routes.file.content, file.create_with_content);
+  api.patch(routes.file.single, file.update);
+  api.post(routes.file.collection, file.create);
+  api.put(routes.file.content, file.update_content);
+  api.delete(routes.file.single, file.remove);
+
 
   // OAuth2 routes
   var oauth2 = require('../app/controllers/oauth2')(routes, passport, oauth2server);

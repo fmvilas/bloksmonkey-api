@@ -24,7 +24,8 @@ function runAll() {
     if( !exclude(path.join(root, fileStats.name)) ) {
       console.log('· ' + (path.join(root, fileStats.name)).substr(__dirname.length));
       execSync('node ' + path.normalize(__dirname + '/../config/seed.js'));
-      execSync('mocha ' + path.join(root, fileStats.name));
+      console.log('Executing command: '+ 'mocha -t 10000 ' + path.join(root, fileStats.name));
+      execSync('mocha -t 10000 ' + path.join(root, fileStats.name));
     }
     next();
   });
