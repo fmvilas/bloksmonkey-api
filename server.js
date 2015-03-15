@@ -50,6 +50,7 @@ app.locals.routes = require('./config/route_table');
 
 app.use(cookieParser()); // Read cookies (needed for auth)
 app.use(bodyParser.json()); // Get information from json requests
+app.use(bodyParser.raw()); // Get information from raw stream requests
 app.use(bodyParser.urlencoded({ // Get information from urlencoded requests
   extended: true
 }));
