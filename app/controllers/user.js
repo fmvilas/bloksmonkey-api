@@ -3,6 +3,7 @@
 
 var UserService = require('../services/user/user'),
     mongoose = require('mongoose'),
+    checkHasScope = require('../helpers/auth').checkHasScope,
     service = new UserService(mongoose.connection);
 
 
@@ -52,10 +53,12 @@ module.exports = function(routes, passport, oauth2server) {
   return {
     show: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['user_info', 'user']),
       show
     ],
     update: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['user']),
       update
     ]
   };

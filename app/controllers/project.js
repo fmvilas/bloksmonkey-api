@@ -3,6 +3,7 @@
 
 var ProjectService = require('../services/project/project'),
     mongoose = require('mongoose'),
+    checkHasScope = require('../helpers/auth').checkHasScope,
     service = new ProjectService(mongoose.connection),
     _ = require('underscore');
 
@@ -101,22 +102,27 @@ module.exports = function(routes, passport, oauth2server) {
   return {
     list: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_read', 'project']),
       list
     ],
     show: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project_read', 'project']),
       show
     ],
     create: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project']),
       create
     ],
     update: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project']),
       update
     ],
     remove: [
       passport.authenticate('bearer', { session: false }),
+      checkHasScope(['project']),
       remove
     ]
   };

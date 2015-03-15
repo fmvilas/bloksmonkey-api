@@ -54,8 +54,7 @@ describe('OAuth2 API', function() {
           .end(function(err, res) {
             if( err ) { console.dir(err); done(err); }
             transaction_id = /name="transaction_id" value="(.*?)"/.exec(res.text)[1];
-            //scope = /name="scope" value="(.*?)"/.exec(res.text)[1];
-            scope = 'user project delete_project';
+            scope = 'user project project_files';
             done();
           });
       });
