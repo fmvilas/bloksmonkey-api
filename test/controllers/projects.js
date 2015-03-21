@@ -24,7 +24,7 @@ describe('Project API', function() {
       .expect(200)
       .expect(function(res) {
         var json = res.body;
-        json.length.should.be.eql(5);
+        json.length.should.be.eql(4);
       })
       .end(done);
     });
