@@ -43,10 +43,6 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
   });
 };
 
-UserSchema.methods.getRoleId = function () {
-  return this.role || 'guest';
-};
-
 UserSchema.statics.authenticate = function (email, password, next) {
   this.findOne({ email: email }, function (err, user) {
     if(err)
