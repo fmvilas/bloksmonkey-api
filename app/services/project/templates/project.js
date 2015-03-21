@@ -36,6 +36,11 @@ var show = {
 };
 
 var show_params = {
+  _id:        { type: 'string', alias: 'id', required: true },
+  user_id:    { type: 'string', required: true }
+};
+
+var show_filter_params = {
   _id:        { type: 'string', alias: 'id', required: true }
 };
 
@@ -54,6 +59,11 @@ var update = {
 };
 
 var update_params = {
+  _id:        { type: 'string', alias: 'id', required: true },
+  user_id:    { type: 'string', required: true }
+};
+
+var update_filter_params = {
   _id:        { type: 'string', alias: 'id', required: true }
 };
 
@@ -68,7 +78,8 @@ var create = {
 };
 
 var remove_params = {
-  _id:        { type: 'string', alias: 'id', required: true }
+  _id:        { type: 'string', alias: 'id', required: true },
+  user_id:    { type: 'string', required: true }
 };
 
 var remove_response = {
@@ -79,9 +90,11 @@ var remove_response = {
 module.exports = {
   show: show,
   show_params: show_params,
+  show_filter_params: show_filter_params,
   list_params: list_params,
   update: update,
   update_params: update_params,
+  update_filter_params: update_filter_params,
   create: create,
   remove_params: remove_params,
   remove_response: remove_response

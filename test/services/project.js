@@ -18,19 +18,20 @@ describe('ProjectService', function() {
   describe('#list', function() {
 
     it('should retrieve a list of projects', function(done) {
-      service.list({}, function(projects) {
+      service.list({}, function(err, projects) {
         projects.should.be.an('array');
         _.each(projects, function(project) {
           project.should.be.an('object');
           project.should.have.keys(['id', 'name', 'description', 'visibility',
                                     'owner_id', 'members', 'created_at', 'updated_at']);
+          project.visibility.should.be.eql('public');
         });
         done();
       });
     });
 
     it('should retrieve a list of projects for a user', function(done) {
-      service.list({ user_id: '51964caa9c253bdbb1d00fb4' }, function(projects) {
+      service.list({ user_id: '51964caa9c253bdbb1d00fb4' }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(4);
         _.each(projects, function(project) {
@@ -46,7 +47,7 @@ describe('ProjectService', function() {
       service.list({
         user_id: '51964caa9c253bdbb1d00fb4',
         user_role: 'owner'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(3);
         _.each(projects, function(project) {
@@ -62,7 +63,7 @@ describe('ProjectService', function() {
       service.list({
         user_id: '51964caa9c253bdbb1d00fb4',
         user_role: 'member'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(1);
         _.each(projects, function(project) {
@@ -79,7 +80,7 @@ describe('ProjectService', function() {
         user_id: '51964caa9c253bdbb1d00fb4',
         user_role: 'owner',
         visibility: 'public'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(2);
         _.each(projects, function(project) {
@@ -96,7 +97,7 @@ describe('ProjectService', function() {
         user_id: '51964caa9c253bdbb1d00fb4',
         user_role: 'member',
         visibility: 'public'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(1);
         _.each(projects, function(project) {
@@ -113,7 +114,7 @@ describe('ProjectService', function() {
         user_id: '54cfcc0244b6fd7034198f1f',
         user_role: 'owner',
         visibility: 'private'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(1);
         _.each(projects, function(project) {
@@ -130,7 +131,7 @@ describe('ProjectService', function() {
         user_id: '54cfcc0244b6fd7034198f1f',
         user_role: 'member',
         visibility: 'private'
-      }, function(projects) {
+      }, function(err, projects) {
         projects.should.be.an('array');
         projects.length.should.be.eql(1);
         _.each(projects, function(project) {
@@ -146,9 +147,11 @@ describe('ProjectService', function() {
   });
 
   describe('#find', function() {
-
     it('should retrieve project information for a valid <id>', function(done) {
-      service.find({ id: '54cfcc0244b6fd7034198f20' }, function(project) {
+      service.find({
+        id: '54cfcc0244b6fd7034198f20',
+        user_id: '51964caa9c253bdbb1d00fb4'
+      }, function(err, project) {
         project.should.be.an('object');
         project.should.have.keys(['id', 'name', 'description', 'visibility',
                                   'owner_id', 'members', 'created_at', 'updated_at']);
@@ -163,19 +166,35 @@ describe('ProjectService', function() {
         done();
       });
     });
+
+    it('should retrieve an error when you do not have permission', function(done) {
+      service.find({
+        id: '54cfcc0244b6fd7034198f23',
+        user_id: '51964caa9c253bdbb1d00fb4'
+      }, function(err, project) {
+        err.should.be.an('object');
+        err.status.should.be.eql(403);
+        err.name.should.be.eql('ProjectServiceError');
+        err.message.should.be.eql('Error 403: You don\'t have permission to perform this action.');
+        done();
+      });
+    });
   });
 
   describe('#update', function() {
 
     it('should update project information and then return it', function(done) {
-      var params = { id: '54cfcc0244b6fd7034198f20' },
-        data = {
-          name: 'Super testing project!',
-          description: 'Just to test it',
-          visibility: 'private'
-        };
+      var params = {
+            id: '54cfcc0244b6fd7034198f20',
+            user_id: '51964caa9c253bdbb1d00fb4'
+          },
+          data = {
+            name: 'Super testing project!',
+            description: 'Just to test it',
+            visibility: 'private'
+          };
 
-      service.update(params, data, function(project) {
+      service.update(params, data, function(err, project) {
         project.should.be.an('object');
         project.should.have.keys(['id', 'name', 'description', 'visibility',
                                   'owner_id', 'members', 'created_at', 'updated_at']);
@@ -190,16 +209,37 @@ describe('ProjectService', function() {
     });
 
     it('should update project owner', function(done) {
-      var params = { id: '54cfcc0244b6fd7034198f20' },
-        data = {
-          owner_id: '54cfcc0244b6fd7034198f1f'
-        };
+      var params = {
+            id: '54cfcc0244b6fd7034198f20',
+            user_id: '51964caa9c253bdbb1d00fb4'
+          },
+          data = {
+            owner_id: '54cfcc0244b6fd7034198f1f'
+          };
 
-      service.update(params, data, function(project) {
+      service.update(params, data, function(err, project) {
         project.should.be.an('object');
         project.should.have.keys(['id', 'name', 'description', 'visibility',
                                   'owner_id', 'members', 'created_at', 'updated_at']);
         project.owner_id.should.be.eql(data.owner_id);
+        done();
+      });
+    });
+
+    it('should retrieve an error when you do not have permission', function(done) {
+      var params = {
+            id: '54cfcc0244b6fd7034198f23',
+            user_id: '51964caa9c253bdbb1d00fb4'
+          },
+          data = {
+            name: 'This rename should not be done'
+          };
+
+      service.update(params, data, function(err, project) {
+        err.should.be.an('object');
+        err.status.should.be.eql(403);
+        err.name.should.be.eql('ProjectServiceError');
+        err.message.should.be.eql('Error 403: You don\'t have permission to perform this action.');
         done();
       });
     });
@@ -214,7 +254,7 @@ describe('ProjectService', function() {
         owner_id: '51964caa9c253bdbb1d00fb4'
       };
 
-      service.create(data, function(project) {
+      service.create(data, function(err, project) {
         project.should.be.an('object');
         project.should.have.keys(['id', 'name', 'description', 'visibility',
                                   'owner_id', 'members', 'created_at', 'updated_at']);
@@ -235,7 +275,7 @@ describe('ProjectService', function() {
         members: ['54cfcc0244b6fd7034198f1f']
       };
 
-      service.create(data, function(project) {
+      service.create(data, function(err, project) {
         project.should.be.an('object');
         project.should.have.keys(['id', 'name', 'description', 'visibility',
                                   'owner_id', 'members', 'created_at', 'updated_at']);
@@ -252,11 +292,27 @@ describe('ProjectService', function() {
 
   describe('#remove', function() {
     it('should remove a project', function(done) {
-      service.remove({ id: '54cfcc0244b6fd7034198f20' }, function(response) {
+      service.remove({
+        id: '54cfcc0244b6fd7034198f23',
+        user_id: '54cfcc0244b6fd7034198f1f'
+      }, function(err, response) {
         response.should.be.an('object');
         response.should.have.keys(['status', 'message']);
         response.status.should.be.eql(200);
         response.message.should.be.eql('Project deleted succesfully');
+        done();
+      });
+    });
+
+    it('should retrieve an error when you do not have permission', function(done) {
+      service.remove({
+        id: '54cfcc0244b6fd7034198f24',
+        user_id: '51964caa9c253bdbb1d00fb4'
+      }, function(err, response) {
+        err.should.be.an('object');
+        err.status.should.be.eql(403);
+        err.name.should.be.eql('ProjectServiceError');
+        err.message.should.be.eql('Error 403: You don\'t have permission to perform this action.');
         done();
       });
     });
