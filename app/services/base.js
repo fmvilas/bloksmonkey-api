@@ -52,16 +52,16 @@ BaseService.ServiceError.prototype.constructor = BaseService.ServiceError;
  *
  * @param {Object} template - The template defining the structure of the output data.
  * @param {Object} params - The params you want to validate.
- * @param {Error} [CustomServiceError] - A custom error object.
- * @returns {Object|ServiceError} The validated data.
+ * @throws CustomServiceError - A custom error object.
+ * @returns {Object} The validated data.
  */
 BaseService.prototype.validate_params = function(template, params, CustomServiceError) {
   var result = templo.render(template, params);
 
-  CustomServiceError = CustomServiceError || ServiceError;
+  CustomServiceError = CustomServiceError || BaseService.ServiceError;
 
   if( result.status !== 'ok' ) {
-    return new CustomServiceError({
+    throw new CustomServiceError({
       status: 422,
       errors: result.errors,
       warnings: result.warnings
