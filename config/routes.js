@@ -5,6 +5,7 @@ module.exports = function(app, passport, oauth2server){
   var express = require('express'),
       routes = require('./route_table'),
       ProjectController = require('../app/controllers/project'),
+      FileController = require('../app/controllers/file'),
       api = express.Router();
 
   // Session routes
@@ -27,7 +28,7 @@ module.exports = function(app, passport, oauth2server){
   api.delete(routes.project.single, project.remove);
 
   // File routes
-  var file = require('../app/controllers/file')(routes, passport, oauth2server);
+  var file = new FileController(routes, passport, oauth2server);
   api.get(routes.file.content, file.show_content);
   api.get(routes.file.single, file.show);
   api.get(routes.file.collection, file.list);
