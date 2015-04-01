@@ -11,7 +11,7 @@ describe('FileService', function() {
   before(function(done) {
     database.connect(function(connection) {
       db = connection;
-      service = new FileService(connection);
+      service = new FileService({ db: connection });
       done();
     });
   });
@@ -76,7 +76,7 @@ describe('FileService', function() {
       service.list({
         project_id: '54cfcc0244b6fd7034198f20',
         fields: ''
-      }, function(err) {
+      }, function(err, list) {
         err.status.should.be.eql(422);
         err.name.should.be.eql('FileServiceError');
         err.message.should.be.a('string');
@@ -157,8 +157,7 @@ describe('FileService', function() {
       service.create({
         name: 'test.txt',
         project_id: '54cfcc0244b6fd7034198f20',
-        user_id: '51964caa9c253bdbb1d00fb4',
-        content: content
+        user_id: '51964caa9c253bdbb1d00fb4'
       }, function(err, file) {
         err.status.should.be.eql(422);
         err.name.should.be.eql('FileServiceError');
