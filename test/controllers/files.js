@@ -192,5 +192,17 @@ describe('File API', function() {
       })
       .end(done);
     });
+
+    it('should return an error if directory does not exist', function(done) {
+      request.delete(files_endpoint + '/failtest/')
+      .query({ access_token: token })
+      .expect(404)
+      .expect(function(res) {
+        var json = res.body;
+        json.status.should.be.eql(404);
+        json.message.should.be.eql("File not found.");
+      })
+      .end(done);
+    });
   });
 });
