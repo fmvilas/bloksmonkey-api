@@ -16,10 +16,10 @@ function S3Service(config) {
 S3Service.prototype = Object.create(BaseService.prototype);
 S3Service.prototype.constructor = S3Service;
 
-S3Service.prototype.normalize_key = function(key) {
+S3Service.prototype.normalize_key = function(key, index) {
   if( Array.isArray(key) ) {
     key = _.map(key, function(part) {
-      if( (''+part).substr(1) !== '/' ) { return '/' + part; }
+      if( index && (''+part).substr(0,1) !== '/' ) { return '/' + part; }
       return part;
     });
     return path.normalize(replaceAll(key.join(''), '[\.]{2}', ''));
