@@ -48,5 +48,9 @@ module.exports = function(app, passport, oauth2server){
 
   app.use(routes.root, api);
 
+  app.use(function(req, res) {
+    res.status(404).render('404');
+  });
+
   return routes;
 };
