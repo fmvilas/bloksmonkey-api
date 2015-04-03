@@ -4,6 +4,7 @@
 module.exports = function(app, passport, oauth2server){
   var express = require('express'),
       routes = require('./route_table'),
+      UserController = require('../app/controllers/user'),
       ProjectController = require('../app/controllers/project'),
       FileController = require('../app/controllers/file'),
       api = express.Router();
@@ -15,7 +16,7 @@ module.exports = function(app, passport, oauth2server){
   api.post(routes.session.logout, session.logout);
 
   // User routes
-  var user = require('../app/controllers/user')(routes, passport, oauth2server);
+  var user = new UserController(routes, passport, oauth2server);
   api.get(routes.user.single, user.show);
   api.patch(routes.user.single, user.update);
 

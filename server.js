@@ -32,7 +32,7 @@ require('./app/models/authorization_code');
 require('./app/models/access_token');
 
 /* SETUP OAUTH2 SERVER */
-oauth2server = require('./config/oauth2server');
+oauth2server = require('./app/services/oauth2/oauth2');
 
 /* SETUP PASSPORT */
 passport = require('./config/passport');

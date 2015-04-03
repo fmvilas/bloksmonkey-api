@@ -10,7 +10,6 @@ module.exports = function(routes, passport, oauth2server) {
     var next_url = req.query.next || routes.app;
 
     if (req.isAuthenticated()) {
-      console.log('\n\nIS LOGGED IN\n\n');
       res.redirect(next_url);
     }
 

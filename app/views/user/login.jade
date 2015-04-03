@@ -1,18 +1,14 @@
 extends ../layout
 
 block styles
-  link(href='/css/login.css')
+  link(rel='stylesheet', href='/css/common.css')
+  link(rel='stylesheet', href='/css/login.css')
 
 block content
-  h1 Login
-
+  a#logo(href='/')
   form(action=routes.user.login, method='POST', class='login-form')
     p
-      label(for='email') Your email
-    p
       input(name='email', value='jon@bloksmonkey.io')
-    p
-      label(for='password') Your password
     p
       input(name='password', type='password', value='1234')
 
@@ -20,4 +16,4 @@ block content
     input(type='hidden', name='_csrf', value=csrf_token)
 
     p
-      input(value='Login', type='submit')
+      input.button.primary(value='Login', type='submit')

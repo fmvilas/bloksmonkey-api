@@ -3,63 +3,58 @@
 
 var UserService = require('../services/user/user'),
     mongoose = require('mongoose'),
-    checkHasScope = require('../helpers/auth').checkHasScope,
-    service = new UserService(mongoose.connection);
+    service = new UserService(mongoose.connection),
+    _ = require('underscore'),
+    withErrorResonse = require('../mixins/withErrorResponse'),
+    hasScope = require('./middlewares/hasScope'),
+    UserControllerStatic;
 
+UserControllerStatic = {};
 
-function respondWithError(err, res) {
-  var res_info = {
-    status: err.status,
-    message: err.message
+_.extend(UserControllerStatic, withErrorResonse);
+
+/**
+ * Sends the user.
+ * GET /api/v1/users/:id
+ */
+UserControllerStatic.show = function (req, res, next) {
+  var self = this;
+  service.find(req.params, function(err, user) {
+    if( err ) return self.respondWithError(err, res);
+    return res.json(user);
+  });
+};
+
+/**
+ * Updates a user and sends it.
+ * PATCH /api/v1/users/:id
+ */
+UserControllerStatic.update = function (req, res, next) {
+  var self = this;
+  service.update(req.params, req.body, function(err, user) {
+    if( err ) return self.respondWithError(err, res);
+    return res.json(user);
+  });
+};
+
+function UserController (routes, passport, oauth2server) {
+  this.config = {
+    routes: routes,
+    passport: passport,
+    oauth2server: oauth2server
   };
 
-  if( err.errors ) { res_info.errors = err.errors; }
-  if( err.warnings ) { res_info.warnings = err.warnings; }
+  this.show = [
+    this.config.passport.authenticate('bearer', { session: false }),
+    hasScope(['user_info', 'user']),
+    UserControllerStatic.show.bind(UserControllerStatic)
+  ];
 
-  res.status(err.status).json(res_info);
+  this.update = [
+    this.config.passport.authenticate('bearer', { session: false }),
+    hasScope(['user']),
+    UserControllerStatic.update.bind(UserControllerStatic)
+  ];
 }
 
-
-module.exports = function(routes, passport, oauth2server) {
-
-  /**
-   * Sends the user.
-   * GET /api/v1/users/:id
-   */
-  var show = function (req, res, next) {
-    try {
-      service.find(req.params, function(user) {
-        return res.json(user);
-      });
-    } catch(e) {
-      return respondWithError(e, res);
-    }
-  };
-
-  /**
-   * Updates a user and sends it.
-   * PATCH /api/v1/users/:id
-   */
-  var update = function (req, res, next) {
-    try {
-      service.update(req.params, req.body, function(user) {
-        return res.json(user);
-      });
-    } catch(e) {
-      return respondWithError(e, res);
-    }
-  };
-
-  return {
-    show: [
-      passport.authenticate('bearer', { session: false }),
-      checkHasScope(['user_info', 'user']),
-      show
-    ],
-    update: [
-      passport.authenticate('bearer', { session: false }),
-      checkHasScope(['user']),
-      update
-    ]
-  };
-};
+module.exports = UserController;
