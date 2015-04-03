@@ -1,4 +1,10 @@
 extends layout
 
+block styles
+  link(rel='stylesheet', href='/css/common.css')
+  link(rel='stylesheet', href='/css/404.css')
+
 block content
-  h1 404 Page not found!
+  a#logo(href='/')
+  h1= 'Nothing was found here'
+  h2= 'are you sure the URL is correct?'
