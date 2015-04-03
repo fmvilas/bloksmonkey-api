@@ -3,12 +3,13 @@
 
 var ProjectService = require('../services/project/project'),
     mongoose = require('mongoose'),
-    checkHasScope = require('../helpers/auth').checkHasScope,
     service = new ProjectService(mongoose.connection),
     _ = require('underscore'),
-    withErrorResponse = require('./mixins/withErrorResponse');
+    withErrorResponse = require('../mixins/withErrorResponse'),
+    hasScope = require('./middlewares/hasScope'),
+    ProjectControllerStatic;
 
-var ProjectControllerStatic = {};
+ProjectControllerStatic = {};
 
 _.extend(ProjectControllerStatic, withErrorResponse);
 
@@ -81,31 +82,31 @@ function ProjectController(routes, passport, oauth2server) {
 
   this.list = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project_read', 'project']),
+    hasScope(['project_read', 'project']),
     ProjectControllerStatic.list.bind(ProjectControllerStatic)
   ];
 
   this.show = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project_read', 'project']),
+    hasScope(['project_read', 'project']),
     ProjectControllerStatic.show.bind(ProjectControllerStatic)
   ];
 
   this.create = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     ProjectControllerStatic.create.bind(ProjectControllerStatic)
   ];
 
   this.update = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     ProjectControllerStatic.update.bind(ProjectControllerStatic)
   ];
 
   this.remove = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     ProjectControllerStatic.remove.bind(ProjectControllerStatic)
   ];
 }

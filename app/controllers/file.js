@@ -3,12 +3,13 @@
 
 var FileService = require('../services/file/file'),
     mongoose = require('mongoose'),
-    checkHasScope = require('../helpers/auth').checkHasScope,
     service = new FileService({ db: mongoose.connection }),
     _ = require('underscore'),
-    withErrorResponse = require('./mixins/withErrorResponse');
+    withErrorResponse = require('../mixins/withErrorResponse'),
+    hasScope = require('./middlewares/hasScope'),
+    FileControllerStatic;
 
-var FileControllerStatic = {};
+FileControllerStatic = {};
 
 _.extend(FileControllerStatic, withErrorResponse);
 
@@ -134,49 +135,49 @@ function FileController(routes, passport, oauth2server) {
 
   this.list = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project_read', 'project']),
+    hasScope(['project_read', 'project']),
     FileControllerStatic.list.bind(FileControllerStatic)
   ];
 
   this.show = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project_read', 'project']),
+    hasScope(['project_read', 'project']),
     FileControllerStatic.show.bind(FileControllerStatic)
   ];
 
   this.show_content = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project_read', 'project']),
+    hasScope(['project_read', 'project']),
     FileControllerStatic.show_content.bind(FileControllerStatic)
   ];
 
   this.create = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     FileControllerStatic.create.bind(FileControllerStatic)
   ];
 
   this.create_with_content = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     FileControllerStatic.create_with_content.bind(FileControllerStatic)
   ];
 
   this.update = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     FileControllerStatic.update.bind(FileControllerStatic)
   ];
 
   this.update_content = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     FileControllerStatic.update_content.bind(FileControllerStatic)
   ];
 
   this.remove = [
     this.config.passport.authenticate('bearer', { session: false }),
-    checkHasScope(['project']),
+    hasScope(['project']),
     FileControllerStatic.remove.bind(FileControllerStatic)
   ];
 }

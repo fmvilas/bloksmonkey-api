@@ -1,3 +1,6 @@
+/*jslint vars:true, unparam:true, node:true */
+"use strict";
+
 function respondWithError(err, res) {
   var res_info = {
     status: err.status || 500,

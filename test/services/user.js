@@ -18,7 +18,7 @@ describe('UserService', function() {
   describe('#find', function() {
 
     it('should retrieve user information for a valid <id>', function(done) {
-      service.find({ id: '51964caa9c253bdbb1d00fb4' }, function(user) {
+      service.find({ id: '51964caa9c253bdbb1d00fb4' }, function(err, user) {
         user.should.be.an('object');
         user.should.have.keys(['id', 'email', 'name', 'avatar_url', 'preferences', 'created_at', 'updated_at']);
         user.id.should.be.eql('51964caa9c253bdbb1d00fb4');
@@ -43,7 +43,7 @@ describe('UserService', function() {
             avatar_url: 'http://www.jontravolta.com/avatar.jpg'
           };
 
-      service.update(params, data, function(user) {
+      service.update(params, data, function(err, user) {
         user.should.be.an('object');
         user.should.have.keys(['id', 'email', 'name', 'avatar_url', 'preferences', 'created_at', 'updated_at']);
         user.id.should.be.eql('51964caa9c253bdbb1d00fb4');

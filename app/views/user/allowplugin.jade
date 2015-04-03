@@ -1,14 +1,38 @@
 extends ../layout
 
 block styles
-	link(href='/css/allowplugin.css')
+  link(rel='stylesheet', href='/css/common.css')
+  link(rel='stylesheet', href='/css/font-awesome.min.css')
+  link(rel='stylesheet', href='/css/allow_plugin.css')
 
 block content
-	h1= 'Allow ' + plugin.name + ' to access your account?'
+  h1
+    strong= plugin.name
+    span= ' is requesting access to your account and wants to:'
 
-	form(action=routes.oauth2.decision, method='POST', class='login-form')
-		input(type='hidden', name='transaction_id', value=transactionID)
-		input(type='hidden', name='_csrf', value=csrf_token)
-		input(type='hidden', name='scope', value=plugin.scope)
-		input(type='submit', value='Allow', id='allow')
-		input(type='submit', value='Deny', name='cancel', id='allow')
+  ul.scopes
+    each scope in scopes
+      - if( scope === 'user' )
+        li.scope
+          i.fa.fa-user
+          != ' Access and manage your personal information'
+      - if( scope === 'user_info' )
+        li.scope
+          i.fa.fa-user
+          != ' Access your personal information'
+      - if( scope === 'project' )
+        li.scope
+          i.fa.fa-folder
+          != ' Access and manage your projects and files'
+      - if( scope === 'project_read' )
+        li.scope
+          i.fa.fa-folder
+          != ' Access your projects and files'
+
+  form(action=url, method='POST', class='login-form')
+    input(type='hidden', name='transaction_id', value=transactionID)
+    input(type='hidden', name='_csrf', value=csrf_token)
+    input(type='hidden', name='scope', value=scopes.join(' '))
+    .footer
+      input.button(type='submit', value='Deny', name='cancel', id='allow')
+      input.button.primary(type='submit', value='Allow', id='allow')

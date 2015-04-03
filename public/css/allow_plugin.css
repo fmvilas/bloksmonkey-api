@@ -1,0 +1,44 @@
+#content {
+  width: 450px;
+  margin-left: -225px;
+  background: white;
+  border: #eee 2px solid;
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+h1 {
+  font-weight: normal;
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+h2 {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.button {
+  margin-left: 20px;
+}
+
+.scopes {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+}
+
+.scope {
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.scope i {
+  margin-right: 10px;
+}
+
+.footer {
+  text-align: right;
+}

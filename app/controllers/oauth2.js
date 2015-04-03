@@ -8,8 +8,8 @@ var passport = require('passport'),
     Client = mongoose.model('Client'),
     AuthorizationCode = mongoose.model('AuthorizationCode'),
     AccessToken = mongoose.model('AccessToken'),
-    authHelpers = require('../helpers/auth'),
-    ensureLoggedIn = authHelpers.ensureLoggedIn,
+    ensureLoggedIn = require('./middlewares/ensureLoggedIn'),
+    validateScopes = require('./middlewares/validateScopes'),
     dbHelpers = require('../helpers/db'),
     isObjectID = dbHelpers.isObjectID;
 
@@ -62,7 +62,10 @@ module.exports = function(routes, passport, oauth2server) {
           } else {
             res.render('user/allowplugin', {
               transactionID: req.oauth2.transactionID,
-              plugin: req.oauth2.client
+              plugin: req.oauth2.client,
+              scopes: req.oauth2.req.scope,
+              url: req.baseUrl + routes.oauth2.decision,
+              csrf_token: req.csrfToken()
             });
           }
         });
@@ -73,7 +76,7 @@ module.exports = function(routes, passport, oauth2server) {
 
     decision: [
       ensureLoggedIn,
-      authHelpers.validateScopes,
+      validateScopes,
       oauth2server.decision(function(req, done) {
         if( !req.body.cancel ) {
           User.findByIdAndUpdate(
