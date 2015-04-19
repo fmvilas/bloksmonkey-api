@@ -9,6 +9,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     session = require('express-session'),
     csrf = require('csurf')(),
+    i18next = require('i18next'),
     passport;
 
 var mongoose = require('mongoose');
@@ -36,6 +37,18 @@ oauth2server = require('./app/services/oauth2/oauth2');
 
 /* SETUP PASSPORT */
 passport = require('./config/passport');
+
+/* SETUP I18N */
+i18next.init({
+  ns: {
+    namespaces: ['common'],
+    defaultNs: 'common'
+  },
+  resGetPath: 'app/locales/__lng__/__ns__.json',
+  lowerCaseLng: true
+});
+app.use(i18next.handle);
+i18next.registerAppHelper(app);
 
 /* SETUP EXPRESS SERVER */
 if( config.env !== 'production' ) {
@@ -70,8 +83,11 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(function(req, res, next) { // CSRF Token protection
   var routes = app.locals.routes,
       protected_routes = [
-        routes.root + routes.session.login,
-        routes.root + routes.session.logout,
+        routes.account.new,
+        routes.account.forgot_password,
+        routes.account.reset_password,
+        routes.session.login,
+        routes.session.logout,
         routes.root + routes.oauth2.authorize,
         routes.root + routes.oauth2.decision
       ];
@@ -90,6 +106,14 @@ app.use(function(req, res, next) { // CSRF Token protection
 /* SETUP ROUTES */
 /* Load our routes and pass in our app, fully configured passport and oauth2server */
 require('./config/routes.js')(app, passport, oauth2server);
+
+app.use(function (req, res, next) {
+  res.status(404).render('404');
+});
+
+/*app.use(function (err, req, res, next) {
+  res.status(500).render('500');
+});*/
 
 /* HERE COMES THE LORD */
 var server = app.listen(config.port);

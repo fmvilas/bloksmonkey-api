@@ -1,4 +1,4 @@
-#content {
+.allow-plugin #content {
   width: 450px;
   margin-left: -225px;
   background: white;
@@ -7,38 +7,38 @@
   border-radius: 10px;
 }
 
-h1 {
+.allow-plugin h1 {
   font-weight: normal;
   margin-top: 0;
   font-size: 20px;
   margin-bottom: 40px;
 }
 
-h2 {
+.allow-plugin h2 {
   font-weight: normal;
   font-size: 16px;
 }
 
-.button {
+.allow-plugin .button {
   margin-left: 20px;
 }
 
-.scopes {
+.allow-plugin .scopes {
   text-align: left;
   list-style: none;
   padding-left: 0;
 }
 
-.scope {
+.allow-plugin .scope {
   padding: 5px;
   margin-bottom: 10px;
   font-size: 14px;
 }
 
-.scope i {
+.allow-plugin .scope i {
   margin-right: 10px;
 }
 
-.footer {
+.allow-plugin .footer {
   text-align: right;
 }

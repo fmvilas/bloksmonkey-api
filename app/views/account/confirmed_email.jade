@@ -1,0 +1,11 @@
+extends ../layout
+
+block title
+  != t('account.confirm_email.title')
+
+block content
+  a#logo(href='/')
+
+  h1.success= t('account.confirm_email.success.title')
+  p.instructions= t('account.confirm_email.success.description')
+  a.button.primary(href=routes.session.login)= t('account.confirm_email.success.login_button')

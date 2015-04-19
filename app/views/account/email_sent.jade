@@ -1,0 +1,14 @@
+extends ../layout
+
+block title
+  != t('account.signup')
+
+block content
+  a#logo(href='/')
+
+  h1.success= t('account.email_sent.title')
+  p.instructions= t('account.email_sent.subtitle')
+
+  form(action=routes.account.send_email, method='POST', class='email-sent-form')
+    input.button.primary(value=t('account.email_sent.resend_email'), type='submit')
+    input(type='hidden', name='_csrf', value=csrf_token)

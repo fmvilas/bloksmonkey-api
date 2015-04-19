@@ -5,13 +5,13 @@ var UserService = require('../services/user/user'),
     mongoose = require('mongoose'),
     service = new UserService(mongoose.connection),
     _ = require('underscore'),
-    withErrorResonse = require('../mixins/withErrorResponse'),
+    withErrorResponse = require('../mixins/withErrorResponse'),
     hasScope = require('./middlewares/hasScope'),
     UserControllerStatic;
 
 UserControllerStatic = {};
 
-_.extend(UserControllerStatic, withErrorResonse);
+_.extend(UserControllerStatic, withErrorResponse);
 
 /**
  * Sends the user.

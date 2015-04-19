@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt-nodejs'),
+    crypto = require('crypto'),
     SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
@@ -11,11 +12,14 @@ var UserSchema = new Schema({
   github_login: { type: Boolean, default: false },
   preferences: { type: Object, default: {} },
   plugins: { type: [Schema.Types.ObjectId], default: [] },
+  signup_token: { type: String },
+  reset_password_token: { type: String },
+  is_confirmed: { type: Boolean, default: false },
   created_at: { type: Date },
-  updated_at: { type: Date, default: Date.now }
+  updated_at: { type: Date }
 });
 
-UserSchema.pre('save', function(next) {
+UserSchema.pre('save', function (next) {
   var user = this;
 
   // only hash the password if it has been modified (or is new)
@@ -34,6 +38,20 @@ UserSchema.pre('save', function(next) {
       next();
     });
   });
+});
+
+UserSchema.pre('save', function (next) {
+  var user = this,
+      now = Date.now();
+
+  if( user.isNew ) {
+    user.created_at = now;
+    user.signup_token = crypto.randomBytes(48).toString('hex');
+  }
+
+  if( user.isModified() ) user.updated_at = now
+
+  next();
 });
 
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {
@@ -59,6 +77,14 @@ UserSchema.statics.authenticate = function (email, password, next) {
         return next(null, user);
       });
     }
+  });
+};
+
+UserSchema.statics.findOneAndGenerateResetPasswordToken = function (query, callback) {
+  var data = { reset_password_token: crypto.randomBytes(48).toString('hex') };
+  this.findOneAndUpdate(query, data, function (err, user) {
+    if( err ) return callback(err);
+    callback(null, user);
   });
 };
 

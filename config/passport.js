@@ -65,14 +65,18 @@ passport.use('local', new LocalStrategy({
 
       // if no user is found, return the message
       if (!user) {
-        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+        return done(req.i18n.t('session.login_failed'), null);
+      }
+
+      // if user is not confirmed, return the message
+      if (!user.is_confirmed) {
+        return done(req.i18n.t('session.email_not_confirmed'), null);
       }
 
       // if the user is found but the password is wrong
-      user.comparePassword(password, function(err) {
-        if( err ) {
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-        }
+      user.comparePassword(password, function(err, isMatch) {
+        if( err ) { return done(err, null); }
+        if( !isMatch ) { return done(null, false); }
 
         // all is well, return successful user
         return done(null, user);

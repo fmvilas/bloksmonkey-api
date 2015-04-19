@@ -7,6 +7,7 @@ module.exports = [
     "preferences": {
       "email_notifications": true
     },
+    "is_confirmed": true,
     "created_at" : 1415376246243,
     "updated_at" : 1415376246243
   },
@@ -18,6 +19,7 @@ module.exports = [
     "preferences": {
       "email_notifications": false
     },
+    "is_confirmed": true,
     "created_at" : 1415376246243,
     "updated_at" : 1415376246243
   }

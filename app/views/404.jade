@@ -1,4 +1,7 @@
 extends layout
 
+block title
+  != t('not_found.title')
+
 block content
-  h1 404 Page not found!
+  h1= t('not_found.title')

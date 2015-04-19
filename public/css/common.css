@@ -8,14 +8,14 @@ body {
   background: url('/images/blurred_background.jpg') no-repeat center center fixed;
   background-size: cover;
   font-family: 'Roboto', sans-serif;
+  text-align: center;
 }
 
 #content {
-  position: fixed;
-  left: 50%;
-  top: 20%;
+  display: inline-block;
   width: 300px;
-  margin-left: -150px;
+  margin-top: 80px;
+  margin-bottom: 80px;
   text-align: center;
 }
 
@@ -25,6 +25,10 @@ body {
   background-size: cover;
   width: 200px;
   height: 153px;
+}
+
+.wrapper {
+  margin-bottom: 15px;
 }
 
 input {
@@ -43,11 +47,18 @@ input:not([type="submit"]):focus {
   color: black;
 }
 
-input[type="submit"] {
-
+.error {
+  width: 300px;
+  font-size: 12px;
+  background: rgb(232, 2, 2);
+  color: white;
+  padding: 10px;
 }
 
 .button {
+  display: inline-block;
+  padding: 10px 15px;
+  text-decoration: none;
   background: #eee;
   color: #333;
   min-width: 100px;
