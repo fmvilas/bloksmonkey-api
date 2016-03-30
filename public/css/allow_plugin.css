@@ -1,0 +1,44 @@
+.allow-plugin #content {
+  width: 450px;
+  margin-left: -225px;
+  background: white;
+  border: #eee 2px solid;
+  padding: 20px 40px;
+  border-radius: 10px;
+}
+
+.allow-plugin h1 {
+  font-weight: normal;
+  margin-top: 0;
+  font-size: 20px;
+  margin-bottom: 40px;
+}
+
+.allow-plugin h2 {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.allow-plugin .button {
+  margin-left: 20px;
+}
+
+.allow-plugin .scopes {
+  text-align: left;
+  list-style: none;
+  padding-left: 0;
+}
+
+.allow-plugin .scope {
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.allow-plugin .scope i {
+  margin-right: 10px;
+}
+
+.allow-plugin .footer {
+  text-align: right;
+}

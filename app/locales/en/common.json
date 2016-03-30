@@ -1,0 +1,66 @@
+{
+
+  "not_found": {
+    "title": "Page not found"
+  },
+
+  "unexpected_error": {
+    "title": "Something went wrong :("
+  },
+
+  "allow_plugin": {
+    "title": "Allow plugin"
+  },
+
+  "name_placeholder": "Your name...",
+  "email_placeholder": "Your email...",
+  "password_placeholder": "Your password...",
+
+  "session": {
+    "login": "Login",
+    "login_failed": "Incorrect email or password.",
+    "logout_question": "Are you sure you want to log out?",
+    "logout": "Log out",
+    "email_not_confirmed": "Your email has not been confirmed yet."
+  },
+
+  "account": {
+    "signup": "Sign Up",
+    "create": "Create Account",
+    "forgot_password": "Forgot your password?",
+    "new_password_placeholder": "Your new password...",
+    "email_sent": {
+      "title": "Hooray! Almost done!",
+      "subtitle": "An email has been sent to you to confirm your account. Check your inbox and follow the instructions.",
+      "resend_email": "Resend Email"
+    },
+    "confirm_email": {
+      "title": "Confirm Email",
+      "error_title": "Ouch!",
+      "error_description": "There was an error while trying to confirm your email.",
+      "success": {
+        "title": "Email confirmed succesfully.",
+        "description": "You can now log in with your new account.",
+        "login_button": "Log in now!"
+      }
+    },
+    "send_reset_password_email": {
+      "title": "Almost done!",
+      "subtitle": "An email has been sent to you to reset your password. Check your inbox and follow the instructions.",
+      "error_title": "Ouch!",
+      "error_description": "There was an error while trying to reset your password."
+    },
+    "reset_password": {
+      "reset_password": "Reset Password",
+      "error_title": "Ouch!",
+      "error_description": "There was an error while trying to reset your password.",
+      "bad_token_title": "Can't reset your password",
+      "bad_token_description": "The email or token you provided are not valid.",
+      "success": {
+        "title": "Password reseted succesfully",
+        "description": "You can now log in with your new password.",
+        "login_button": "Log in now!"
+      }
+    }
+  }
+}

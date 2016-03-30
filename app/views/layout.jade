@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    title
+      block title
+      |  - BloksMonkey IDE
+
+    link(rel='stylesheet', type='text/css', href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic&subset=latin,cyrillic-ext,greek-ext,greek,vietnamese,latin-ext,cyrillic')
+    link(rel='stylesheet', href='/css/all.css')
+    block styles
+    link(rel='icon', href='favicon.png')
+
+    body
+      div#content
+        block content

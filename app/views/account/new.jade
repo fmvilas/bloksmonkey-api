@@ -1,0 +1,31 @@
+extends ../layout
+
+block title
+  != t('account.signup')
+
+block content
+  a#logo(href='/')
+  form(action=routes.account.create, method='POST', class='signup-form')
+    .wrapper.name-wrapper
+      input(name='name', placeholder=t('name_placeholder'), value=(memento || {}).name )
+      - if( error_messages && error_messages.name )
+        .error.error-name-message
+          != error_messages.name
+
+    .wrapper.email-wrapper
+      input(name='email', placeholder=t('email_placeholder'), value=(memento || {}).email)
+      - if( error_messages && error_messages.email )
+        .error.error-email-message
+          != error_messages.email
+
+    .wrapper.password-wrapper
+      input(name='password', type='password', placeholder=t('password_placeholder'))
+      - if( error_messages && error_messages.password )
+        .error.error-password-message
+          != error_messages.password
+
+    input(name='next', type='hidden', value=next_url)
+    input(type='hidden', name='_csrf', value=csrf_token)
+
+    .wrapper
+      input.button.primary(value=t('account.create'), type='submit')

@@ -1,0 +1,13 @@
+extends ../layout
+
+block title
+  != t('session.login')
+
+block content
+  a#logo(href='/')
+  form(action=routes.session.logout, method='POST', class='login-form')
+    h1= t('session.logout_question')
+
+    input(type='hidden', name='_csrf', value=csrf_token)
+    .wrapper
+      input.button.primary(value=t('session.logout'), type='submit')

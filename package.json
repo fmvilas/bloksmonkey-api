@@ -1,0 +1,51 @@
+{
+  "name": "didgeridoo-api",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": "0.12.0"
+  },
+  "engineStrict": true,
+  "scripts": {
+    "start": "server.js",
+    "test": "test/test.js"
+  },
+  "dependencies": {
+    "aws-sdk": "2.1.12",
+    "bcrypt-nodejs": "0.0.3",
+    "express": "4.10.1",
+    "body-parser": "1.9.2",
+    "connect-flash": "0.1.1",
+    "cookie-parser": "1.3.3",
+    "csurf": "1.6.6",
+    "express-session": "1.9.1",
+    "i18next": "1.7.10",
+    "is_js": "0.7.3",
+    "jade": "1.7.0",
+    "method-override": "2.3.0",
+    "mime-types": "2.0.9",
+    "moment": "2.9.0",
+    "mongoose": "3.8.18",
+    "morgan": "1.4.1",
+    "oauth2orize": "1.0.1",
+    "passport": "0.2.1",
+    "passport-http": "0.2.2",
+    "passport-http-bearer": "1.0.1",
+    "passport-local": "1.0.0",
+    "passport-oauth2-client-password": "0.1.2",
+    "templo": "0.6.0",
+    "underscore": "1.7.0",
+    "underscore.string": "3.0.3"
+  },
+  "devDependencies": {
+    "async": "0.9.0",
+    "chai": "1.10.0",
+    "gulp": "3.8.11",
+    "gulp-nodemon": "1.0.5",
+    "mocha": "2.0.1",
+    "mongodb": "2.0.15",
+    "superagent": "0.21.0",
+    "supertest": "0.15.0",
+    "walk": "2.3.9"
+  }
+}

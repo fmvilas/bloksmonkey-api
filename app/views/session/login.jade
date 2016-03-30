@@ -1,0 +1,31 @@
+extends ../layout
+
+block title
+  != t('session.login')
+
+block content
+  a#logo(href='/')
+  form(action=routes.session.login, method='POST', class='login-form')
+    - if( error_message )
+      .wrapper.error.error-message
+        != error_message
+
+    .wrapper.email-wrapper
+      input(name='email', placeholder=t('email_placeholder'), value=(memento || {}).email)
+      - if( error_messages && error_messages.email )
+        .error.error-email-message
+          != error_messages.email
+
+    .wrapper.password-wrapper
+      input(name='password', placeholder=t('password_placeholder'), type='password')
+      - if( error_messages && error_messages.password )
+        .error.error-password-message
+          != error_messages.password
+      .forgot-password
+        a(href=routes.account.forgot_password)= t('account.forgot_password')
+
+    input(name='next', type='hidden', value=next_url)
+    input(type='hidden', name='_csrf', value=csrf_token)
+
+    .wrapper
+      input.button.primary(value=t('session.login'), type='submit')
